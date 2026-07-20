@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<JOBFile xmlns="urn:siscadro:test:jxl">
+  <Environment>
+    <CoordinateSystem>
+      <Name>Stereo70</Name>
+      <EPSGCode>3844</EPSGCode>
+    </CoordinateSystem>
+  </Environment>
+  <FieldBook>
+    <PointRecord>
+      <ID>P100</ID>
+      <Name>100</Name>
+      <Code>BM</Code>
+      <Description>Benchmark near gate</Description>
+    </PointRecord>
+  </FieldBook>
+  <Reductions>
+    <Point>
+      <ID>P100</ID>
+      <Name>100</Name>
+      <SurveyMethod>RTK Fixed</SurveyMethod>
+      <Grid>
+        <North>500123.100</North>
+        <East>300456.200</East>
+        <Elevation>115.300</Elevation>
+      </Grid>
+    </Point>
+  </Reductions>
+</JOBFile>

@@ -1,0 +1,117 @@
+[project]
+name = "siscadro-jxl"
+dynamic = ["version"]
+# version = "0.0.1"
+description = "JXL job-file survey point parser and canonical siscadro-survey extractor adapter."
+authors = [{name = "Nicu Tofan", email = "nicu.tofan@gmail.com"}]
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: UNLICENSED License",
+    "Operating System :: OS Independent",
+    "Private :: Do Not Upload",
+]
+dependencies = [
+    "attrs>=23.1,<25",
+    "lxml>=4.9,<6",
+    "siscadro-survey",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "build",
+    "flake8",
+    "isort",
+    "mypy",
+    "pre-commit",
+    "pyproject-flake8",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest",
+    "twine",
+    "wheel",
+]
+
+
+[project.entry-points."siscadro_survey.extractors"]
+jxl = "siscadro_jxl.extractor:JxlExtractor"
+
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=67.0", "setuptools_scm[toml]>=8"]
+
+
+[tool.setuptools]
+include-package-data = true
+
+
+[tool.setuptools.packages.find]
+include = ["siscadro_jxl*"]
+exclude = ["venv*", "playground*", "tests*"]
+
+
+[tool.setuptools_scm]
+fallback_version = "0.0.1-dev"
+write_to = "siscadro_jxl/__version__.py"
+
+
+[tool.isort]
+
+# Make isort compatible with black
+profile = "black"
+
+skip = [
+    "test_*.py", "*_test.py",
+    "tests_*.py", "*_tests.py",
+    "spec_*.py", "*_spec.py",
+    "specs_*.py", "*_specs.py",
+]
+src_paths = "siscadro_jxl"
+known_first_party = "siscadro_jxl"
+line_length = 80
+
+[tools.black]
+
+# Standard black line length is 88
+line-length = 80
+
+# Python versions that should be supported by Black's output
+target-version = ['py39', 'py310', 'py311']
+
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+python_files = [
+    "test_*.py", "*_test.py",
+    "tests_*.py", "*_tests.py",
+    "spec_*.py", "*_spec.py",
+    "specs_*.py", "*_specs.py",
+]
+python_classes = ["Test", "Acceptance"]
+python_functions = ["test"]
+
+
+[tool.mypy]
+ignore_missing_imports = true
+exclude = [
+    ".+_tests?.py", "tests?_.+",
+    ".+_specs?.py", "specs?_.+"
+]
+
+
+[tool.flake8]
+max-line-length = 80
+docstring-convention = "google"
+exclude = [
+    "test_*.py", "*_test.py",
+    "tests_*.py", "*_tests.py",
+    "spec_*.py", "*_spec.py",
+    "specs_*.py", "*_specs.py",
+]
+extend-ignore = "E203, E501, E704"

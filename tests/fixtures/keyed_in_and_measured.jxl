@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<JOBFile>
+  <Reductions>
+    <Point>
+      <Name>10</Name>
+      <Code>KIN</Code>
+      <SurveyMethod>KeyedIn</SurveyMethod>
+      <Grid>
+        <North>500200.000</North>
+        <East>300200.000</East>
+        <Elevation>100.000</Elevation>
+      </Grid>
+    </Point>
+    <Point>
+      <Name>11</Name>
+      <Code>GPS</Code>
+      <SurveyMethod>RTK Fixed</SurveyMethod>
+      <Grid>
+        <North>500210.500</North>
+        <East>300210.500</East>
+        <Elevation>101.500</Elevation>
+      </Grid>
+    </Point>
+    <Point>
+      <Name>12</Name>
+      <Code>BAD</Code>
+      <SurveyMethod>RTK Fixed</SurveyMethod>
+      <Grid>
+        <North>500220.000</North>
+        <East>N/A</East>
+        <Elevation>102.000</Elevation>
+      </Grid>
+    </Point>
+  </Reductions>
+</JOBFile>

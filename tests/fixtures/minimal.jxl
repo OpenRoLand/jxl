@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<JOBFile>
+  <Reductions>
+    <Point>
+      <Name>1</Name>
+      <Code>TOP</Code>
+      <Description1>Boundary corner</Description1>
+      <SurveyMethod>GPS</SurveyMethod>
+      <Grid>
+        <North>500000.123</North>
+        <East>300000.456</East>
+        <Elevation>120.789</Elevation>
+      </Grid>
+    </Point>
+    <Point>
+      <Name>2</Name>
+      <Code>TOP</Code>
+      <SurveyMethod>GPS</SurveyMethod>
+      <Grid>
+        <North>500010.000</North>
+        <East>300010.000</East>
+        <Elevation>121.000</Elevation>
+      </Grid>
+    </Point>
+  </Reductions>
+</JOBFile>
