@@ -43,3 +43,9 @@ def keyed_in_and_measured_jxl(fixtures_dir: Path) -> Path:
     coordinate to exercise issue reporting.
     """
     return fixtures_dir / "keyed_in_and_measured.jxl"
+
+
+@pytest.fixture
+def survey_pro_jxl(fixtures_dir: Path) -> Path:
+    """Return the Survey Pro-style fixture with attribute PointRecord IDs."""
+    return fixtures_dir / "survey_pro.jxl"

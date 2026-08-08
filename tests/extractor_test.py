@@ -88,6 +88,40 @@ class TestExtractNamespacedDocument:
         assert result.records[0].source_record_id == "P100"
 
 
+class TestExtractSurveyProDocument:
+    """Extraction of the Survey Pro-style fixture with QC and WGS84."""
+
+    def test_maps_wgs84_and_quality(self, survey_pro_jxl: Path) -> None:
+        result = JxlExtractor().extract(survey_pro_jxl)
+
+        record = next(r for r in result.records if r.name == "205")
+        assert record.latitude == 46.65977287134
+        assert record.longitude == 25.62071090333
+        assert record.wgs84_altitude == 837.2458
+        assert record.status == "FIXED"
+        assert record.method == "GpsStaticObservation"
+        assert record.hrms == 0.01
+        assert record.vrms == 0.016
+        assert record.pdop == 1.1
+        assert record.hdop == 0.6
+        assert record.vdop == 0.9
+        assert record.satellite_count == 14
+        assert record.observed_at_utc is not None
+        assert record.source_record_id == "000000e1"
+        assert record.source_values["TimeStamp"] == "2010-01-01T21:57:03"
+        assert record.source_values["Method"] == "GpsStaticObservation"
+
+    def test_deleted_field_book_record_not_merged(
+        self, survey_pro_jxl: Path
+    ) -> None:
+        result = JxlExtractor().extract(survey_pro_jxl)
+
+        names = [record.name for record in result.records]
+        assert "999" in names
+        deleted = next(r for r in result.records if r.name == "999")
+        assert "TimeStamp" not in deleted.source_values
+
+
 class TestExtractKeyedInAndMeasured:
     """Extraction of the mixed KeyedIn/measured/invalid fixture."""
 
@@ -123,6 +157,80 @@ class TestExtractKeyedInAndMeasured:
         ]
         assert len(warnings) == 1
         assert warnings[0].record_id == "12"
+
+
+class TestClassifySurveyMethod:
+    """Measured quality tokens and coord-only Code remap on extract."""
+
+    def _write_point(self, path: Path, method: str) -> None:
+        path.write_bytes(
+            (
+                '<?xml version="1.0"?>\n'
+                "<JOBFile>\n"
+                "  <Reductions>\n"
+                "    <Point>\n"
+                "      <Name>1</Name>\n"
+                "      <SurveyMethod>%s</SurveyMethod>\n"
+                "      <Grid>\n"
+                "        <North>1</North>\n"
+                "        <East>2</East>\n"
+                "        <Elevation>3</Elevation>\n"
+                "      </Grid>\n"
+                "    </Point>\n"
+                "  </Reductions>\n"
+                "</JOBFile>\n" % method
+            ).encode("utf-8")
+        )
+
+    def test_fix_becomes_fixed_status(self, tmp_path: Path) -> None:
+        path = tmp_path / "fix.jxl"
+        self._write_point(path, "Fix")
+        record = JxlExtractor().extract(path).records[0]
+        assert record.status == "FIXED"
+        assert record.method is None
+        assert record.kind is None
+        assert record.source_values.get("SurveyMethod") == "Fix"
+
+    def test_network_float_becomes_float_status(self, tmp_path: Path) -> None:
+        path = tmp_path / "nfloat.jxl"
+        self._write_point(path, "NetworkFloat")
+        record = JxlExtractor().extract(path).records[0]
+        assert record.status == "FLOAT"
+        assert record.method is None
+
+    def test_code_becomes_imported(self, tmp_path: Path) -> None:
+        path = tmp_path / "code.jxl"
+        self._write_point(path, "Code")
+        record = JxlExtractor().extract(path).records[0]
+        assert record.method is None
+        assert record.status is None
+        assert record.kind == "imported"
+
+    def test_base_survey_method_becomes_kind_base(self, tmp_path: Path) -> None:
+        path = tmp_path / "base.jxl"
+        self._write_point(path, "Base")
+        record = JxlExtractor().extract(path).records[0]
+        assert record.kind == "base"
+        assert record.method is None
+        assert record.status is None
+        assert record.source_values.get("SurveyMethod") == "Base"
+
+    def test_base_station_survey_method_becomes_kind_base(
+        self, tmp_path: Path
+    ) -> None:
+        path = tmp_path / "base_station.jxl"
+        self._write_point(path, "Base Station")
+        record = JxlExtractor().extract(path).records[0]
+        assert record.kind == "base"
+        assert record.method is None
+
+    def test_gps_method_unchanged(self, tmp_path: Path) -> None:
+        path = tmp_path / "gps.jxl"
+        self._write_point(path, "GPS")
+        record = JxlExtractor().extract(path).records[0]
+        assert record.method == "GPS"
+        assert record.status is None
+        assert record.kind is None
 
 
 class TestExtractPreservesFieldBookRawValues:

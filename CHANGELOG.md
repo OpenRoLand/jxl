@@ -4,6 +4,18 @@
 
 ### Added
 
+- Typed JobXML models ``JxlGrid``, ``JxlWgs84``, ``JxlPrecision``,
+  ``JxlGpsTime``, ``JxlQualityControl1``, ``JxlQualityControl2``, and
+  ``JxlEcefDeltas``; ``JxlPointRecord`` and ``JxlPoint`` expose explicit
+  nested fields instead of dumping QC/WGS84 into ``raw_values``.
+- Parse Survey Pro ``PointRecord/@ID`` and ``@TimeStamp`` attributes;
+  merge field-book records into ``Reductions/Point`` by ID; skip
+  ``Deleted=true`` records.
+- Map merged field-book quality and WGS84 onto canonical
+  ``SurveyPointRecord`` (``observed_at_utc`` from QC1 GPS ``StartTime``,
+  ``hrms``/``vrms``, DOPs, satellite count, lat/lon/ellipsoidal height;
+  ``Fix`` SurveyMethod → ``status=FIXED`` with creation ``Method`` on
+  ``method``).
 - Initial `siscadro-jxl` package: a secure, namespace-agnostic, streaming
   `lxml`-based parser for JXL job-file (`JOBFile`) documents
   (`siscadro_jxl.parser.JxlParser`), producing the raw `JxlPoint`,
@@ -30,4 +42,12 @@
 
 ### Changed
 
-### Fixed
+- JXL extractor maps measured ``SurveyMethod`` quality tokens onto
+  ``status`` (``Fix``/``NetworkFix`` → ``FIXED``, ``Float``/``NetworkFloat``
+  → ``FLOAT``) and clears ``method``. Coord-only ``Code`` becomes
+  ``kind=imported`` with null method and status. Base / reference-station
+  tokens (``Base``, ``Base Station``, ``Reference``, …) become
+  ``kind=base`` with null method/status, matching RW5 base-setup Type.
+  Raw ``SurveyMethod`` remains in ``source_values``.
+- JXL parser logs a DEBUG summary after a successful parse
+  (``parsed N survey points from path``), matching Cube/RW5.

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<JOBFile jobName="survey-pro-fixture" version="5.57" product="Survey Pro">
+  <FieldBook>
+    <PointRecord ID="000000e1" TimeStamp="2010-01-01T21:57:03">
+      <Name>205</Name>
+      <Code></Code>
+      <Description1 Name="Description">field note</Description1>
+      <Method>GpsStaticObservation</Method>
+      <SurveyMethod>Fix</SurveyMethod>
+      <Classification>Normal</Classification>
+      <Deleted>false</Deleted>
+      <ECEFDeltas>
+        <DeltaX>-15623.14635163266</DeltaX>
+        <DeltaY>-22919.73951019696</DeltaY>
+        <DeltaZ>22937.53525945917</DeltaZ>
+      </ECEFDeltas>
+      <Precision>
+        <Horizontal>0.01000000000</Horizontal>
+        <Vertical>0.01600000000</Vertical>
+      </Precision>
+      <QualityControl1>
+        <NumberOfSatellites>14</NumberOfSatellites>
+        <RelativeDOPs>false</RelativeDOPs>
+        <PDOP>1.10000000000</PDOP>
+        <HDOP>0.60000000000</HDOP>
+        <VDOP>0.90000000000</VDOP>
+        <RMS>86.12440191388</RMS>
+        <NumberOfPositionsUsed>4</NumberOfPositionsUsed>
+        <StartTime>
+          <GPSWeek>2011</GPSWeek>
+          <Seconds>230933.0000</Seconds>
+        </StartTime>
+        <EndTime>
+          <GPSWeek>2011</GPSWeek>
+          <Seconds>230938.0000</Seconds>
+        </EndTime>
+        <MonitorStatus>NotMonitored</MonitorStatus>
+      </QualityControl1>
+      <QualityControl2>
+        <NumberOfSatellites>14</NumberOfSatellites>
+        <ErrorScale>0.016363636</ErrorScale>
+        <VCVxx>0.00014400000</VCVxx>
+      </QualityControl2>
+    </PointRecord>
+    <PointRecord ID="000000ff" TimeStamp="2010-01-01T22:00:00">
+      <Name>999</Name>
+      <Deleted>true</Deleted>
+    </PointRecord>
+  </FieldBook>
+  <Reductions>
+    <Point>
+      <ID>000000e1</ID>
+      <Name>205</Name>
+      <Code></Code>
+      <Description1 Name="Description">field note</Description1>
+      <SurveyMethod>Fix</SurveyMethod>
+      <Classification>Normal</Classification>
+      <Grid>
+        <North>573538.8166</North>
+        <East>547617.3490</East>
+        <Elevation>798.2456</Elevation>
+      </Grid>
+      <WGS84>
+        <Latitude>46.65977287134</Latitude>
+        <Longitude>25.62071090333</Longitude>
+        <Height>837.2458</Height>
+      </WGS84>
+    </Point>
+    <Point>
+      <ID>000000ff</ID>
+      <Name>999</Name>
+      <Grid>
+        <North>1</North>
+        <East>2</East>
+        <Elevation>3</Elevation>
+      </Grid>
+    </Point>
+  </Reductions>
+</JOBFile>

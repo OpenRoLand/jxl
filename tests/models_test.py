@@ -59,6 +59,24 @@ class TestJxlPointIsKeyedIn:
         assert not JxlPoint().is_keyed_in
 
 
+class TestJxlPointGridProperties:
+    """Grid coordinate properties delegate to :attr:`JxlPoint.grid`."""
+
+    def test_reads_from_grid_object(self) -> None:
+        from siscadro_jxl.models import JxlGrid
+
+        point = JxlPoint(
+            grid=JxlGrid(north="1.0", east="2.0", elevation="3.0")
+        )
+
+        assert point.north == "1.0"
+        assert point.east == "2.0"
+        assert point.elevation == "3.0"
+
+    def test_none_without_grid(self) -> None:
+        assert JxlPoint().north is None
+
+
 class TestFreezeMappingDefaults:
     """Every raw-value mapping defaults to an empty, read-only mapping."""
 

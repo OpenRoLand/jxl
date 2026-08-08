@@ -34,23 +34,42 @@ python -m pip install -e ".[dev]"
 External entity resolution and DTD network access are disabled while
 parsing, so an untrusted `.jxl` file cannot trigger an XXE or SSRF.
 
-## Field mapping
+## Parsed model (plane 1)
 
-| JXL element                         | Canonical field           |
-| ------------------------------------ | -------------------------- |
-| `Reductions/Point/Name` (or `FieldBook` fallback) | `name` |
-| `Reductions/Point/Code` (or `FieldBook` fallback) | `code` |
-| `Reductions/Point/Description1` (or `FieldBook Description` fallback) | `description` |
-| `Reductions/Point/SurveyMethod`      | `method`                   |
-| `Reductions/Point/Grid/North`        | `north`                    |
-| `Reductions/Point/Grid/East`         | `east`                     |
-| `Reductions/Point/Grid/Elevation`    | `height`                   |
-| `Reductions/Point/ID`                | `source_record_id`         |
+The low-level parser returns typed attrs models independent of the
+canonical survey record:
 
-Any other value found on a point or its merged field-book record is
-preserved in `source_values` (field-book values are nested under a
-`field_book` key). Geographic and quality fields are left `None`: JXL
-documents in this format do not provide them.
+| JobXML source | Parsed model field |
+| --- | --- |
+| `FieldBook/PointRecord/@ID` or child `ID` | `JxlPointRecord.point_id` |
+| `FieldBook/PointRecord/@TimeStamp` | `JxlPointRecord.timestamp` |
+| `FieldBook/PointRecord/Method` | `JxlPointRecord.creation_method` |
+| `FieldBook/PointRecord/SurveyMethod` | `JxlPointRecord.survey_method` |
+| `FieldBook/PointRecord/Precision` | `JxlPointRecord.precision` |
+| `FieldBook/PointRecord/QualityControl1` | `JxlPointRecord.quality_control_1` |
+| `FieldBook/PointRecord/QualityControl2` | `JxlPointRecord.quality_control_2` |
+| `FieldBook/PointRecord/ECEFDeltas` | `JxlPointRecord.ecef_deltas` |
+| `Reductions/Point/Grid` | `JxlPoint.grid` (`north`/`east`/`elevation` properties) |
+| `Reductions/Point/WGS84` | `JxlPoint.wgs84` |
+| merged field book | `JxlPoint.record` |
+
+Unrecognized leaf elements remain in each object's `raw_values` mapping.
+
+## Canonical mapping (plane 2)
+
+| Typed JXL source | Canonical field |
+| --- | --- |
+| `JxlPoint.grid` NEH | `north` / `east` / `height` |
+| `JxlPoint.wgs84` (or record fallback) | `latitude` / `longitude` / `wgs84_altitude` |
+| `record.quality_control_1.start_time` | `observed_at_utc` |
+| `record.precision` H/V | `hrms` / `vrms` |
+| QC1 PDOP/HDOP/VDOP / satellites | `pdop` / `hdop` / `vdop` / `satellite_count` |
+| SurveyMethod (`Fix` → status) + record `Method` | `status` + `method` |
+| `Reductions/Point/ID` | `source_record_id` |
+| `Name` / `Code` / `Description` (point or record) | `name` / `code` / `description` |
+
+Compact trace fields (`SurveyMethod`, `TimeStamp`, `Method`, unrecognized
+field-book extras) are kept in `source_values`.
 
 `KeyedIn` points (manually entered, not measured GPS observations) are
 excluded by default. Pass `include_keyed_in=True` to keep them.

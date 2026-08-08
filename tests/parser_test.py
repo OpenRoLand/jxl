@@ -327,6 +327,51 @@ class TestKeepsKeyedInPoints:
         assert keyed_in_points[0].name == "10"
 
 
+class TestSurveyProPointRecordMerge:
+    """Survey Pro ``PointRecord`` attribute IDs merge into Reductions points."""
+
+    def test_merges_by_attribute_id(self, survey_pro_jxl: Path) -> None:
+        result = JxlParser().parse_file(survey_pro_jxl)
+
+        point = next(p for p in result.points if p.point_id == "000000e1")
+        assert point.record is not None
+        assert point.record.point_id == "000000e1"
+        assert point.record.timestamp == "2010-01-01T21:57:03"
+        assert point.record.creation_method == "GpsStaticObservation"
+        assert point.record.survey_method == "Fix"
+
+    def test_typed_field_book_structures(self, survey_pro_jxl: Path) -> None:
+        result = JxlParser().parse_file(survey_pro_jxl)
+
+        record = next(
+            p for p in result.points if p.point_id == "000000e1"
+        ).record
+        assert record is not None
+        assert record.precision is not None
+        assert record.precision.horizontal == "0.01000000000"
+        assert record.quality_control_1 is not None
+        assert record.quality_control_1.start_time is not None
+        assert record.quality_control_1.start_time.gps_week == 2011
+        assert record.quality_control_1.start_time.seconds == "230933.0000"
+        assert record.ecef_deltas is not None
+        assert record.quality_control_2 is not None
+
+    def test_reductions_wgs84_is_typed(self, survey_pro_jxl: Path) -> None:
+        result = JxlParser().parse_file(survey_pro_jxl)
+
+        point = next(p for p in result.points if p.point_id == "000000e1")
+        assert point.wgs84 is not None
+        assert point.wgs84.latitude == "46.65977287134"
+        assert point.grid is not None
+        assert point.north == "573538.8166"
+
+    def test_deleted_point_record_is_not_merged(self, survey_pro_jxl: Path) -> None:
+        result = JxlParser().parse_file(survey_pro_jxl)
+
+        deleted = next(p for p in result.points if p.point_id == "000000ff")
+        assert deleted.record is None
+
+
 def test_xml_syntax_error_is_a_real_lxml_error() -> None:
     """Sanity check that the fixture used above is actually malformed."""
     try:
