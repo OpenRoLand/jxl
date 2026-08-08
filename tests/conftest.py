@@ -1,4 +1,4 @@
-"""Shared pytest fixtures for siscadro-jxl tests.
+"""Shared pytest fixtures for openroland-jxl tests.
 
 Every fixture and fixture file here is synthetic; no customer files,
 names, or coordinates are used anywhere in this test suite.

@@ -54,4 +54,4 @@ dmypy.json
 playground/
 
 # setuptools_scm will put the version here.
-siscadro_jxl/__version__.py
+openroland_jxl/__version__.py

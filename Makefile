@@ -1,5 +1,5 @@
-MODULE_NAME ?= siscadro_jxl
-PACKAGE_NAME ?= siscadro-jxl
+MODULE_NAME ?= openroland_jxl
+PACKAGE_NAME ?= openroland-jxl
 ifeq ($(OS),Windows_NT)
     detected_OS := Windows
 else

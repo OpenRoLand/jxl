@@ -1,21 +1,20 @@
 [project]
-name = "siscadro-jxl"
+name = "openroland-jxl"
 dynamic = ["version"]
 # version = "0.0.1"
-description = "JXL job-file survey point parser and canonical siscadro-survey extractor adapter."
+description = "JXL job-file survey point parser and canonical openroland-survey-core extractor adapter."
 authors = [{name = "Nicu Tofan", email = "nicu.tofan@gmail.com"}]
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: UNLICENSED License",
     "Operating System :: OS Independent",
-    "Private :: Do Not Upload",
 ]
 dependencies = [
     "attrs>=23.1,<25",
     "lxml>=4.9,<6",
-    "siscadro-survey",
+    "openroland-survey-core",
 ]
 
 
@@ -36,8 +35,8 @@ dev = [
 ]
 
 
-[project.entry-points."siscadro_survey.extractors"]
-jxl = "siscadro_jxl.extractor:JxlExtractor"
+[project.entry-points."openroland_survey.extractors"]
+jxl = "openroland_jxl.extractor:JxlExtractor"
 
 
 [build-system]
@@ -50,13 +49,13 @@ include-package-data = true
 
 
 [tool.setuptools.packages.find]
-include = ["siscadro_jxl*"]
+include = ["openroland_jxl*"]
 exclude = ["venv*", "playground*", "tests*"]
 
 
 [tool.setuptools_scm]
 fallback_version = "0.0.1-dev"
-write_to = "siscadro_jxl/__version__.py"
+write_to = "openroland_jxl/__version__.py"
 
 
 [tool.isort]
@@ -70,8 +69,8 @@ skip = [
     "spec_*.py", "*_spec.py",
     "specs_*.py", "*_specs.py",
 ]
-src_paths = "siscadro_jxl"
-known_first_party = "siscadro_jxl"
+src_paths = "openroland_jxl"
+known_first_party = "openroland_jxl"
 line_length = 80
 
 [tools.black]

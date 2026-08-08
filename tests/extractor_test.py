@@ -1,4 +1,4 @@
-"""Tests for :mod:`siscadro_jxl.extractor` and the public convenience API."""
+"""Tests for :mod:`openroland_jxl.extractor` and the public convenience API."""
 
 from __future__ import annotations
 
@@ -6,13 +6,13 @@ from decimal import Decimal
 from pathlib import Path
 
 import openpyxl
-from siscadro_survey import database
-from siscadro_survey.models import SurveyPoint
-from siscadro_survey.records import IssueSeverity
+from openroland_survey import database
+from openroland_survey.models import SurveyPoint
+from openroland_survey.records import IssueSeverity
 from sqlalchemy.orm import Session
 
-import siscadro_jxl
-from siscadro_jxl.extractor import JxlExtractor
+import openroland_jxl
+from openroland_jxl.extractor import JxlExtractor
 
 
 class TestJxlExtractorIdentity:
@@ -314,12 +314,12 @@ class TestExtractMissingOrNonFiniteCoordinates:
 
 
 class TestExtractPointsConvenienceFunction:
-    """Tests for the top-level :func:`siscadro_jxl.extract_points`."""
+    """Tests for the top-level :func:`openroland_jxl.extract_points`."""
 
     def test_default_excludes_keyed_in(
         self, keyed_in_and_measured_jxl: Path
     ) -> None:
-        result = siscadro_jxl.extract_points(keyed_in_and_measured_jxl)
+        result = openroland_jxl.extract_points(keyed_in_and_measured_jxl)
 
         names = [record.name for record in result.records]
         assert "10" not in names
@@ -327,7 +327,7 @@ class TestExtractPointsConvenienceFunction:
     def test_include_keyed_in_option(
         self, keyed_in_and_measured_jxl: Path
     ) -> None:
-        result = siscadro_jxl.extract_points(
+        result = openroland_jxl.extract_points(
             keyed_in_and_measured_jxl, include_keyed_in=True
         )
 
@@ -336,14 +336,14 @@ class TestExtractPointsConvenienceFunction:
 
 
 class TestExportToXlsxConvenienceFunction:
-    """Tests for the top-level :func:`siscadro_jxl.export_to_xlsx`."""
+    """Tests for the top-level :func:`openroland_jxl.export_to_xlsx`."""
 
     def test_writes_expected_row_count(
         self, minimal_jxl: Path, tmp_path: Path
     ) -> None:
         output_path = tmp_path / "out.xlsx"
 
-        summary = siscadro_jxl.export_to_xlsx(minimal_jxl, output_path)
+        summary = openroland_jxl.export_to_xlsx(minimal_jxl, output_path)
 
         assert summary.written_row_count == 2
         assert output_path.exists()
@@ -352,7 +352,7 @@ class TestExportToXlsxConvenienceFunction:
         self, minimal_jxl: Path, tmp_path: Path
     ) -> None:
         output_path = tmp_path / "out.xlsx"
-        siscadro_jxl.export_to_xlsx(minimal_jxl, output_path)
+        openroland_jxl.export_to_xlsx(minimal_jxl, output_path)
 
         workbook = openpyxl.load_workbook(output_path)
         try:
@@ -363,14 +363,14 @@ class TestExportToXlsxConvenienceFunction:
 
 
 class TestExportToDatabaseConvenienceFunction:
-    """Tests for the top-level :func:`siscadro_jxl.export_to_database`."""
+    """Tests for the top-level :func:`openroland_jxl.export_to_database`."""
 
     def test_imports_expected_point_count(
         self, minimal_jxl: Path, tmp_path: Path
     ) -> None:
         db_path = tmp_path / "survey.sqlite3"
 
-        summary = siscadro_jxl.export_to_database(
+        summary = openroland_jxl.export_to_database(
             minimal_jxl, db_path, source_crs="EPSG:3844"
         )
 
@@ -382,7 +382,7 @@ class TestExportToDatabaseConvenienceFunction:
     ) -> None:
         db_path = tmp_path / "survey.sqlite3"
 
-        siscadro_jxl.export_to_database(namespaced_jxl, db_path)
+        openroland_jxl.export_to_database(namespaced_jxl, db_path)
 
         engine = database.create_engine(db_path)
         try:
@@ -399,7 +399,7 @@ class TestExportToDatabaseConvenienceFunction:
         db_path = tmp_path / "survey.sqlite3"
         engine = database.create_engine(db_path)
         try:
-            summary = siscadro_jxl.export_to_database(
+            summary = openroland_jxl.export_to_database(
                 minimal_jxl, engine, source_crs="EPSG:3844"
             )
             assert summary.unique_points_inserted == 2

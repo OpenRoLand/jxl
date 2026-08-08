@@ -1,8 +1,8 @@
-"""Tests for :mod:`siscadro_jxl.models`."""
+"""Tests for :mod:`openroland_jxl.models`."""
 
 from __future__ import annotations
 
-from siscadro_jxl.models import JxlEnvironment, JxlPoint, JxlPointRecord
+from openroland_jxl.models import JxlEnvironment, JxlPoint, JxlPointRecord
 
 
 class TestJxlPointRecordMergeKey:
@@ -63,7 +63,7 @@ class TestJxlPointGridProperties:
     """Grid coordinate properties delegate to :attr:`JxlPoint.grid`."""
 
     def test_reads_from_grid_object(self) -> None:
-        from siscadro_jxl.models import JxlGrid
+        from openroland_jxl.models import JxlGrid
 
         point = JxlPoint(
             grid=JxlGrid(north="1.0", east="2.0", elevation="3.0")

@@ -1,8 +1,8 @@
-# siscadro-jxl
+# openroland-jxl
 
 Secure, streaming parser and canonical extractor adapter for Leica/Trimble
 JXL job-file (`JOBFile`) XML documents, built on top of the shared
-`siscadro-survey` core.
+`openroland-survey-core` core.
 
 This library never imports `cad_server` and has no DXF or CAD geometry
 behavior. `cad-server` depends on this library instead of embedding its own
@@ -11,10 +11,10 @@ JXL parser.
 ## Installation
 
 This is a private, unpublished package. Install it editably alongside its
-`siscadro-survey` dependency:
+`openroland-survey-core` dependency:
 
 ```bash
-python -m pip install -e "..\siscadro-survey"
+python -m pip install -e "..\openroland-survey-core"
 python -m pip install -e ".[dev]"
 ```
 
@@ -81,7 +81,7 @@ point.
 ## Usage
 
 ```python
-from siscadro_jxl import extract_points, export_to_xlsx, export_to_database
+from openroland_jxl import extract_points, export_to_xlsx, export_to_database
 
 # Canonical records only, in memory.
 result = extract_points("job.jxl")
@@ -100,7 +100,7 @@ Lower-level access is also available for callers that only need the raw
 JXL structure, without going through the canonical survey model:
 
 ```python
-from siscadro_jxl.parser import JxlParser
+from openroland_jxl.parser import JxlParser
 
 result = JxlParser().parse_file("job.jxl")
 for point in result.points:
@@ -113,7 +113,7 @@ for point in result.points:
 python -m venv venv
 venv\Scripts\activate
 python -m pip install --upgrade pip
-python -m pip install -e "..\siscadro-survey"
+python -m pip install -e "..\openroland-survey-core"
 python -m pip install -e ".[dev]"
 pre-commit install
 ```

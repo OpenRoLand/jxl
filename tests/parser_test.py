@@ -1,13 +1,13 @@
-"""Tests for :mod:`siscadro_jxl.parser`."""
+"""Tests for :mod:`openroland_jxl.parser`."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
 from lxml import etree
-from siscadro_survey.records import IssueSeverity
+from openroland_survey.records import IssueSeverity
 
-from siscadro_jxl.parser import JxlParser
+from openroland_jxl.parser import JxlParser
 
 
 class TestParseFile:
