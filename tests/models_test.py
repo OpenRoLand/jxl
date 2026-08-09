@@ -65,9 +65,7 @@ class TestJxlPointGridProperties:
     def test_reads_from_grid_object(self) -> None:
         from openroland_jxl.models import JxlGrid
 
-        point = JxlPoint(
-            grid=JxlGrid(north="1.0", east="2.0", elevation="3.0")
-        )
+        point = JxlPoint(grid=JxlGrid(north="1.0", east="2.0", elevation="3.0"))
 
         assert point.north == "1.0"
         assert point.east == "2.0"

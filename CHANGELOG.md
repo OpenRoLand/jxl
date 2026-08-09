@@ -4,6 +4,14 @@
 
 ### Added
 
+- ``make init`` now creates and uses a local ``venv`` (Python 3.14)
+  automatically instead of installing into whatever interpreter happens to
+  be active; delete ``venv/`` to force a rebuild.
+- Public GitHub Actions CI workflow (``.github/workflows/ci.yml``) running
+  lint, typecheck (via ``make test``), and test.
+- Public release workflow (``.github/workflows/python-publish.yml``)
+  publishing to PyPI on a published GitHub release (needs the
+  ``PYPI_API_TOKEN`` repository secret).
 - Typed JobXML models ``JxlGrid``, ``JxlWgs84``, ``JxlPrecision``,
   ``JxlGpsTime``, ``JxlQualityControl1``, ``JxlQualityControl2``, and
   ``JxlEcefDeltas``; ``JxlPointRecord`` and ``JxlPoint`` expose explicit

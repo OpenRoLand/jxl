@@ -365,7 +365,9 @@ class TestSurveyProPointRecordMerge:
         assert point.grid is not None
         assert point.north == "573538.8166"
 
-    def test_deleted_point_record_is_not_merged(self, survey_pro_jxl: Path) -> None:
+    def test_deleted_point_record_is_not_merged(
+        self, survey_pro_jxl: Path
+    ) -> None:
         result = JxlParser().parse_file(survey_pro_jxl)
 
         deleted = next(p for p in result.points if p.point_id == "000000ff")

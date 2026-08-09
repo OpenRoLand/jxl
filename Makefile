@@ -11,11 +11,27 @@ else
 	RMRF = rm -rf
 endif
 
+# Local virtual environment. `init` creates it automatically if missing;
+# delete the `venv/` directory to force a rebuild.
+ifeq ($(OS),Windows_NT)
+    VENV_PYTHON := venv/Scripts/python.exe
+    VENV_CREATE := py -3.14 -m venv venv
+else
+    VENV_PYTHON := venv/bin/python
+    VENV_CREATE := python3.14 -m venv venv
+endif
 
-init:
-	python -m pip install --upgrade pip
-	python -m pip install -e .[dev]
-	pre-commit install
+venv/pyvenv.cfg:
+	$(VENV_CREATE)
+
+venv: venv/pyvenv.cfg
+	$(VENV_PYTHON) -m pip install --upgrade pip
+
+
+init: venv
+	$(VENV_PYTHON) -m pip install -e .[dev]
+	$(VENV_PYTHON) -m pip install pre-commit
+	$(VENV_PYTHON) -m pre_commit install
 
 
 all: test build-dist
@@ -25,31 +41,31 @@ sdist:
 	$(RMRF) dist || echo "dist not found, skipping"
 	$(RMRF) build || echo "build not found, skipping"
 	$(RMRF) $(MODULE_NAME).egg-info || echo "egg-info not found, skipping"
-	python -m build
-	python -m twine check dist/*
+	$(VENV_PYTHON) -m build
+	$(VENV_PYTHON) -m twine check dist/*
 
 
 lint:
-	@python -m isort --check $(MODULE_NAME)  ||  echo "isort:   FAILED!"
-	@python -m black --check --quiet $(MODULE_NAME) || echo "black:   FAILED!"
-	@python -m pflake8 $(MODULE_NAME)  || echo "flake8:  FAILED!"
+	$(VENV_PYTHON) -m isort --check $(MODULE_NAME) tests
+	$(VENV_PYTHON) -m black --check --quiet --workers=1 $(MODULE_NAME) tests
+	$(VENV_PYTHON) -m pflake8 $(MODULE_NAME) tests
 
 
 delint:
-	python -m isort $(MODULE_NAME)
-	python -m black $(MODULE_NAME) --line-length 80
+	$(VENV_PYTHON) -m isort $(MODULE_NAME)
+	$(VENV_PYTHON) -m black $(MODULE_NAME) tests --line-length 80 --workers=1
 
 
 typecheck:
-	python -m mypy $(MODULE_NAME)
+	$(VENV_PYTHON) -m mypy $(MODULE_NAME) tests
 
 
 test: lint typecheck
-	python -m pytest \
+	$(VENV_PYTHON) -m pytest \
 		--cov-report term \
 		--cov-report html \
 		--cov=$(MODULE_NAME) tests/
 
 
 build-dist:
-	python -m build
+	$(VENV_PYTHON) -m build
