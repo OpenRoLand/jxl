@@ -16,7 +16,11 @@ from typing import Optional, Union
 
 from openroland_survey import database as survey_database
 from openroland_survey import extractors
-from openroland_survey.records import ExtractionResult, ImportSummary, XlsxSummary
+from openroland_survey.records import (
+    ExtractionResult,
+    ImportSummary,
+    XlsxSummary,
+)
 from sqlalchemy import Engine
 
 from openroland_jxl.extractor import JxlExtractor

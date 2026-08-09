@@ -10,7 +10,9 @@ import arrow
 
 __all__ = ["gps_time_to_utc"]
 
-_GPS_EPOCH = datetime.datetime(1980, 1, 6, 0, 0, 0, tzinfo=datetime.timezone.utc)
+_GPS_EPOCH = datetime.datetime(
+    1980, 1, 6, 0, 0, 0, tzinfo=datetime.timezone.utc
+)
 _SECONDS_PER_WEEK = 7 * 24 * 60 * 60
 
 #: UTC instants when leap seconds were inserted (same table as SurvCE GT).
@@ -41,9 +43,7 @@ def _leap_seconds(moment: datetime.datetime) -> int:
     return bisect.bisect(_LEAP_SECOND_BOUNDARIES, moment)
 
 
-def gps_time_to_utc(
-    gps_week: int, seconds: float
-) -> datetime.datetime:
+def gps_time_to_utc(gps_week: int, seconds: float) -> datetime.datetime:
     """Convert GPS week and seconds-of-week to aware UTC.
 
     Args:

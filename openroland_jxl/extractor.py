@@ -27,7 +27,12 @@ from openroland_survey.records import (
 )
 
 from openroland_jxl.gps_time import gps_time_to_utc, parse_gps_seconds
-from openroland_jxl.models import JxlPoint, JxlPointRecord, JxlQualityControl1, JxlWgs84
+from openroland_jxl.models import (
+    JxlPoint,
+    JxlPointRecord,
+    JxlQualityControl1,
+    JxlWgs84,
+)
 from openroland_jxl.parser import JxlParser
 
 logger = logging.getLogger(__name__)

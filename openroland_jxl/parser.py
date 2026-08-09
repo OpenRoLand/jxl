@@ -85,7 +85,11 @@ _WGS84_FIELD_MAP = {
     "Height": "height",
 }
 _PRECISION_FIELD_MAP = {"Horizontal": "horizontal", "Vertical": "vertical"}
-_ECEF_DELTA_MAP = {"DeltaX": "delta_x", "DeltaY": "delta_y", "DeltaZ": "delta_z"}
+_ECEF_DELTA_MAP = {
+    "DeltaX": "delta_x",
+    "DeltaY": "delta_y",
+    "DeltaZ": "delta_z",
+}
 _QC1_SCALAR_MAP = {
     "NumberOfSatellites": "number_of_satellites",
     "RelativeDOPs": "relative_dops",
@@ -545,7 +549,7 @@ class JxlParser:
     def _parse(
         self, opener: Callable[[], BinaryIO], source_label: str
     ) -> JxlParseResult:
-        """Run the two-pass parse shared by :meth:`parse_file`/`parse_bytes`."""
+        """Run the shared two-pass parse."""
         source_path = Path(source_label)
         try:
             with opener() as stream:
