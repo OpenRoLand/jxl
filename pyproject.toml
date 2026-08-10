@@ -117,6 +117,6 @@ exclude = [
 extend-ignore = "E203, E501, E704"
 
 [project.urls]
-Homepage = "https://github.com/OpenRoLand/openroland-jxl"
-Repository = "https://github.com/OpenRoLand/openroland-jxl"
-Issues = "https://github.com/OpenRoLand/openroland-jxl/issues"
+Homepage = "https://github.com/OpenRoLand/jxl"
+Repository = "https://github.com/OpenRoLand/jxl"
+Issues = "https://github.com/OpenRoLand/jxl/issues"
