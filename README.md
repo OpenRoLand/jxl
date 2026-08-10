@@ -10,7 +10,13 @@ JXL parser.
 
 ## Installation
 
-This is a private, unpublished package. Install it editably alongside its
+Install the published package from PyPI:
+
+```bash
+python -m pip install openroland-jxl
+```
+
+For development, install it editably alongside its
 `openroland-survey-core` dependency:
 
 ```bash
